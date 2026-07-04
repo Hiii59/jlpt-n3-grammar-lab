@@ -18,11 +18,18 @@ http://localhost:5173
 
 ## Deploy บน Cloudflare Pages
 
-ใช้เป็น static site ได้เลย:
+ใช้เป็น static site ได้เลย ถ้า deploy ผ่าน GitHub:
 
-- Build command: เว้นว่าง
-- Build output directory: `/`
+- Build command: `npm run build`
+- Build output directory: `dist`
 - ไฟล์ที่ต้องใช้: `index.html`, `styles.css`, `app.js`, `grammar-data.js`
+
+ถ้า deploy ด้วย Wrangler:
+
+```powershell
+npm run build
+npx wrangler pages deploy dist --project-name jlpt-n3-grammar-lab --branch main
+```
 
 ## หมายเหตุการตรวจคำแปล
 
