@@ -655,6 +655,9 @@ button {
 
 .conj-tabs {
   margin-bottom: 12px;
+  max-height: 154px;
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .conj-tab {
@@ -664,6 +667,16 @@ button {
   background: var(--panel);
   padding: 6px 10px;
   color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.conj-tab span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.15;
 }
 
 .conj-tab.active {
@@ -671,6 +684,46 @@ button {
   background: #ecfdf9;
   color: var(--teal-dark);
   font-weight: 900;
+}
+
+.conj-tab.active span {
+  color: var(--teal-dark);
+}
+
+.group-guide {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.group-guide-item {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.group-guide-item strong,
+.group-guide-item span {
+  display: block;
+}
+
+.group-guide-item strong {
+  color: var(--indigo);
+}
+
+.group-guide-item span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.group-guide-item p {
+  margin: 6px 0 0;
+  color: #475467;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .rule-card {
@@ -691,8 +744,13 @@ button {
 }
 
 .rule-card p {
-  margin: 0;
+  margin: 0 0 8px;
   line-height: 1.65;
+}
+
+.rule-card p:last-child {
+  margin-bottom: 0;
+  color: #475467;
 }
 
 .mini-table {
@@ -721,6 +779,102 @@ button {
 .mini-table span {
   color: var(--indigo);
   font-weight: 850;
+  text-align: right;
+}
+
+.conjugation-matrix {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfe;
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.matrix-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.matrix-head h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.matrix-head p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 620px;
+}
+
+.matrix-scroll {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  overflow-x: auto;
+}
+
+.verb-matrix {
+  border-collapse: collapse;
+  min-width: 2100px;
+  width: 100%;
+}
+
+.verb-matrix th,
+.verb-matrix td {
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.verb-matrix thead th {
+  background: #f7f8fb;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 900;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.verb-matrix th:first-child {
+  min-width: 150px;
+}
+
+.verb-matrix tbody th {
+  background: #ffffff;
+  color: var(--ink);
+  font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.verb-matrix tbody th span,
+.verb-matrix thead th span {
+  display: block;
+  color: var(--muted);
+  font-family: Inter, "Noto Sans Thai", system-ui, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.verb-matrix td {
+  color: #263244;
+  font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  font-weight: 760;
+}
+
+.verb-matrix .active-form {
+  background: #ecfdf9;
+  color: var(--teal-dark);
+  font-weight: 950;
 }
 
 .small-button {
@@ -796,7 +950,8 @@ button {
 
   .toolbar-band,
   .practice-head,
-  .cards-head {
+  .cards-head,
+  .matrix-head {
     align-items: stretch;
     flex-direction: column;
   }

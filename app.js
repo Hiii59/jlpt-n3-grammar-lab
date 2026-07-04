@@ -3,6 +3,7 @@ const translationChecks = window.N3_TRANSLATION_CHECKS || [];
 const examples = window.N3_EXAMPLES || {};
 const conjugationTypes = window.N3_CONJUGATION_TYPES || [];
 const conjugationVerbs = window.N3_CONJUGATION_VERBS || [];
+const conjugationGroups = window.N3_CONJUGATION_GROUPS || [];
 const storageKey = "jlpt-n3-known-grammar";
 
 const state = {
@@ -36,6 +37,7 @@ const els = {
   practiceBand: document.getElementById("practiceBand"),
   conjugationPractice: document.getElementById("conjugationPractice"),
   conjugationRules: document.getElementById("conjugationRules"),
+  conjugationMatrix: document.getElementById("conjugationMatrix"),
   nextConjugationButton: document.getElementById("nextConjugationButton")
 };
 
@@ -334,8 +336,9 @@ function renderConjugation(forceNew = false) {
   els.conjugationPractice.innerHTML = `
     <div class="conj-question">
       <div class="conj-meta">
-        <span>${escapeHtml(verb.group)}</span>
+        <span>${escapeHtml(verb.groupLabel || verb.group)}</span>
         <span>${escapeHtml(verb.meaning)}</span>
+        ${verb.note ? `<span>${escapeHtml(verb.note)}</span>` : ""}
       </div>
       <p class="conj-base">${escapeHtml(verb.base)} <small>${escapeHtml(verb.reading)}</small></p>
       <p class="exercise-question">ผันเป็น <strong>${escapeHtml(type.label)}</strong> - ${escapeHtml(type.th)}</p>
@@ -353,16 +356,27 @@ function renderConjugation(forceNew = false) {
       ${conjugationTypes.map((item) => `
         <button class="conj-tab${item.key === type.key ? " active" : ""}" data-conj-type="${item.key}" type="button">
           ${escapeHtml(item.label)}
+          <span>${escapeHtml(item.th)}</span>
         </button>
+      `).join("")}
+    </div>
+    <div class="group-guide">
+      ${conjugationGroups.map((item) => `
+        <div class="group-guide-item">
+          <strong>${escapeHtml(item.label)}</strong>
+          <span>${escapeHtml(item.hint)}</span>
+          <p>${escapeHtml(item.detail)}</p>
+        </div>
       `).join("")}
     </div>
     <div class="rule-card">
       <p class="eyebrow">กฎจำเร็ว</p>
       <h3>${escapeHtml(type.label)} <span>${escapeHtml(type.th)}</span></h3>
       <p>${escapeHtml(type.rule)}</p>
+      <p>${escapeHtml(type.usage)}</p>
     </div>
     <div class="mini-table">
-      ${conjugationVerbs.slice(0, 6).map((item) => `
+      ${conjugationVerbs.slice(0, 8).map((item) => `
         <div><strong>${escapeHtml(item.base)}</strong><span>${escapeHtml(item[type.key])}</span></div>
       `).join("")}
     </div>
@@ -389,6 +403,51 @@ function renderConjugation(forceNew = false) {
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") document.getElementById("checkConjugation").click();
   });
+
+  renderConjugationMatrix(type);
+}
+
+function renderConjugationMatrix(activeType) {
+  if (!els.conjugationMatrix) return;
+  els.conjugationMatrix.innerHTML = `
+    <div class="matrix-head">
+      <div>
+        <p class="eyebrow">ตารางอ้างอิง</p>
+        <h3>ผันครบทุกคำตัวอย่าง</h3>
+      </div>
+      <p>เลื่อนแนวนอนเพื่อดูครบทุก 24 รูป คอลัมน์ที่เลือกอยู่จะถูกไฮไลต์ไว้ให้เทียบแพตเทิร์นง่ายขึ้น</p>
+    </div>
+    <div class="matrix-scroll">
+      <table class="verb-matrix">
+        <thead>
+          <tr>
+            <th>กริยา</th>
+            <th>กลุ่ม</th>
+            ${conjugationTypes.map((type) => `
+              <th class="${type.key === activeType.key ? "active-form" : ""}">
+                ${escapeHtml(type.label)}
+                <span>${escapeHtml(type.th)}</span>
+              </th>
+            `).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          ${conjugationVerbs.map((verb) => `
+            <tr>
+              <th>
+                <strong>${escapeHtml(verb.base)}</strong>
+                <span>${escapeHtml(verb.reading)}・${escapeHtml(verb.meaning)}</span>
+              </th>
+              <td>${escapeHtml(verb.groupLabel || verb.group)}</td>
+              ${conjugationTypes.map((type) => `
+                <td class="${type.key === activeType.key ? "active-form" : ""}">${escapeHtml(verb[type.key])}</td>
+              `).join("")}
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 function renderMatch(forceNew = false) {
@@ -498,15 +557,19 @@ function normalizeAnswer(value) {
 function isConjugationAnswer(value, answer) {
   const normalized = normalizeJapanese(value);
   if (!normalized) return false;
-  const variants = [answer];
-  const parenthetical = String(answer).match(/[（(]([^）)]+)[）)]/);
-  if (parenthetical) variants.push(parenthetical[1]);
-  variants.push(String(answer).replace(/[（(].*?[）)]/g, ""));
-  return variants
-    .flatMap((item) => String(item).split(/[、,]/))
+  return conjugationAnswerVariants(answer).some((item) => item === normalized);
+}
+
+function conjugationAnswerVariants(answer) {
+  const raw = String(answer || "");
+  const variants = new Set([raw, raw.replace(/[（(].*?[）)]/g, "")]);
+  for (const match of raw.matchAll(/[（(]([^）)]+)[）)]/g)) {
+    variants.add(match[1]);
+  }
+  return [...variants]
+    .flatMap((item) => String(item).split(/[、,／/・;]/))
     .map(normalizeJapanese)
-    .filter(Boolean)
-    .some((item) => item === normalized);
+    .filter(Boolean);
 }
 
 function normalizeJapanese(value) {

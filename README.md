@@ -22,7 +22,7 @@ http://localhost:5173
 
 - Build command: `npm run build`
 - Build output directory: `dist`
-- ไฟล์ที่ต้องใช้: `index.html`, `styles.css`, `app.js`, `grammar-data.js`, `examples-data.js`, `assets/`
+- ไฟล์ที่ต้องใช้: `index.html`, `styles.css`, `app.js`, `grammar-data.js`, `examples-data.js`, `conjugation-data.js`, `assets/`
 
 ถ้า deploy ด้วย Wrangler:
 
