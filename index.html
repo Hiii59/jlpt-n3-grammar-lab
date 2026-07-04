@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JLPT N3 Grammar Lab</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-panel">
+        <div class="brand-block">
+          <p class="eyebrow">JLPT N3</p>
+          <h1>Grammar Lab</h1>
+          <p class="source-note">สรุปจาก PDF รวมไวยกรณ์ N3 พร้อมคำแปลที่ตรวจแก้แล้ว</p>
+        </div>
+
+        <label class="search-box">
+          <span>ค้นหา</span>
+          <input id="searchInput" type="search" placeholder="เช่น わけ, เพราะ, passive" autocomplete="off" />
+        </label>
+
+        <div class="stat-grid" aria-live="polite">
+          <div>
+            <strong id="totalCount">0</strong>
+            <span>ไวยกรณ์</span>
+          </div>
+          <div>
+            <strong id="knownCount">0</strong>
+            <span>จำแล้ว</span>
+          </div>
+        </div>
+
+        <nav class="day-list" id="dayList" aria-label="เลือกบทเรียน"></nav>
+      </aside>
+
+      <main class="content-panel">
+        <section class="toolbar-band">
+          <div>
+            <p class="eyebrow" id="activeScopeLabel">ทั้งหมด</p>
+            <h2 id="sectionTitle">สรุปไวยกรณ์ทั้งหมด</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="shuffleButton" type="button">สุ่มอ่าน</button>
+            <button class="primary-button" id="practiceSelectedButton" type="button">ฝึกชุดนี้</button>
+          </div>
+        </section>
+
+        <section class="practice-band" id="practiceBand">
+          <div class="practice-head">
+            <div>
+              <p class="eyebrow">แบบฝึกหัด</p>
+              <h2 id="practiceTitle">ทบทวนจากทั้งหมด</h2>
+            </div>
+            <div class="segmented" role="tablist" aria-label="ชนิดแบบฝึกหัด">
+              <button class="segment active" data-mode="cloze" type="button">เติม</button>
+              <button class="segment" data-mode="choice" type="button">เลือก</button>
+              <button class="segment" data-mode="match" type="button">จับคู่</button>
+            </div>
+          </div>
+          <div id="exerciseArea" class="exercise-area"></div>
+        </section>
+
+        <section class="cards-band">
+          <div class="cards-head">
+            <h2 id="cardsTitle">รายการไวยกรณ์</h2>
+            <p id="resultCount">0 รายการ</p>
+          </div>
+          <div id="grammarList" class="grammar-list"></div>
+        </section>
+
+        <section class="audit-band">
+          <h2>บันทึกตรวจคำแปล</h2>
+          <div id="auditList" class="audit-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./grammar-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
