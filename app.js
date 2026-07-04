@@ -1,5 +1,8 @@
 const grammar = window.N3_GRAMMAR || [];
 const translationChecks = window.N3_TRANSLATION_CHECKS || [];
+const examples = window.N3_EXAMPLES || {};
+const conjugationTypes = window.N3_CONJUGATION_TYPES || [];
+const conjugationVerbs = window.N3_CONJUGATION_VERBS || [];
 const storageKey = "jlpt-n3-known-grammar";
 
 const state = {
@@ -10,7 +13,9 @@ const state = {
   currentEntry: null,
   currentMatchSet: [],
   selectedMatchId: null,
-  matchedIds: new Set()
+  matchedIds: new Set(),
+  conjugationType: "te",
+  conjugationVerb: null
 };
 
 const els = {
@@ -28,7 +33,10 @@ const els = {
   auditList: document.getElementById("auditList"),
   shuffleButton: document.getElementById("shuffleButton"),
   practiceSelectedButton: document.getElementById("practiceSelectedButton"),
-  practiceBand: document.getElementById("practiceBand")
+  practiceBand: document.getElementById("practiceBand"),
+  conjugationPractice: document.getElementById("conjugationPractice"),
+  conjugationRules: document.getElementById("conjugationRules"),
+  nextConjugationButton: document.getElementById("nextConjugationButton")
 };
 
 init();
@@ -39,6 +47,7 @@ function init() {
   renderCards();
   renderAudit();
   renderExercise();
+  renderConjugation(true);
   updateStats();
 
   els.searchInput.addEventListener("input", (event) => {
@@ -61,6 +70,7 @@ function init() {
     renderExercise(true);
     els.practiceBand.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+  els.nextConjugationButton.addEventListener("click", () => renderConjugation(true));
 }
 
 function readKnown() {
@@ -170,8 +180,23 @@ function renderCards() {
 function grammarCard(item) {
   const known = state.known.has(item.id);
   const tagText = item.day.includes("-7") ? "敬語" : "ไวยกรณ์";
+  const itemExamples = examples[item.id] || [];
   const aliases = item.aliases?.length
     ? `<div class="tag-row">${item.aliases.slice(0, 3).map((alias) => `<span class="tag">${escapeHtml(alias)}</span>`).join("")}</div>`
+    : "";
+  const exampleBlock = itemExamples.length
+    ? `<details class="example-block" open>
+        <summary>ตัวอย่างประโยค</summary>
+        <div class="example-list">
+          ${itemExamples.map((example) => `
+            <div class="example-item">
+              <div class="example-source">${escapeHtml(example.source || "เสริม")}</div>
+              <p class="example-jp">${escapeHtml(example.jp)}</p>
+              <p class="example-th">${escapeHtml(example.th)}</p>
+            </div>
+          `).join("")}
+        </div>
+      </details>`
     : "";
   return `
     <article class="grammar-card${known ? " known" : ""}" id="card-${item.id}">
@@ -186,6 +211,7 @@ function grammarCard(item) {
       <p class="meaning">${escapeHtml(item.meaning)}</p>
       <p class="form">${escapeHtml(item.form)}</p>
       ${item.note ? `<p class="note">${escapeHtml(item.note)}</p>` : ""}
+      ${exampleBlock}
       ${aliases}
     </article>
   `;
@@ -258,9 +284,10 @@ function renderCloze(entry) {
 }
 
 function renderChoice(entry, pool) {
+  const distractorPool = pool.length >= 4 ? pool : grammar;
   const choices = shuffle([
     entry,
-    ...shuffle(pool.filter((item) => item.id !== entry.id)).slice(0, 3)
+    ...shuffle(distractorPool.filter((item) => item.id !== entry.id)).slice(0, 3)
   ]).map((item) => ({
     id: item.id,
     text: item.meaning
@@ -292,6 +319,76 @@ function renderChoice(entry, pool) {
     });
   });
   document.getElementById("nextExercise").addEventListener("click", () => renderExercise(true));
+}
+
+function renderConjugation(forceNew = false) {
+  if (!conjugationTypes.length || !conjugationVerbs.length) return;
+  const type = conjugationTypes.find((item) => item.key === state.conjugationType) || conjugationTypes[0];
+  state.conjugationType = type.key;
+  if (!state.conjugationVerb || forceNew) {
+    state.conjugationVerb = randomItem(conjugationVerbs);
+  }
+  const verb = state.conjugationVerb;
+  const answer = verb[type.key];
+
+  els.conjugationPractice.innerHTML = `
+    <div class="conj-question">
+      <div class="conj-meta">
+        <span>${escapeHtml(verb.group)}</span>
+        <span>${escapeHtml(verb.meaning)}</span>
+      </div>
+      <p class="conj-base">${escapeHtml(verb.base)} <small>${escapeHtml(verb.reading)}</small></p>
+      <p class="exercise-question">ผันเป็น <strong>${escapeHtml(type.label)}</strong> - ${escapeHtml(type.th)}</p>
+      <div class="answer-row">
+        <input id="conjugationInput" type="text" placeholder="พิมพ์คำตอบ เช่น ${escapeHtml(answer)}" autocomplete="off" />
+        <button class="primary-button" id="checkConjugation" type="button">ตรวจ</button>
+        <button class="ghost-button" id="showConjugation" type="button">เฉลย</button>
+      </div>
+      <p class="feedback" id="conjugationFeedback"></p>
+    </div>
+  `;
+
+  els.conjugationRules.innerHTML = `
+    <div class="conj-tabs">
+      ${conjugationTypes.map((item) => `
+        <button class="conj-tab${item.key === type.key ? " active" : ""}" data-conj-type="${item.key}" type="button">
+          ${escapeHtml(item.label)}
+        </button>
+      `).join("")}
+    </div>
+    <div class="rule-card">
+      <p class="eyebrow">กฎจำเร็ว</p>
+      <h3>${escapeHtml(type.label)} <span>${escapeHtml(type.th)}</span></h3>
+      <p>${escapeHtml(type.rule)}</p>
+    </div>
+    <div class="mini-table">
+      ${conjugationVerbs.slice(0, 6).map((item) => `
+        <div><strong>${escapeHtml(item.base)}</strong><span>${escapeHtml(item[type.key])}</span></div>
+      `).join("")}
+    </div>
+  `;
+
+  els.conjugationRules.querySelectorAll("[data-conj-type]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.conjugationType = button.dataset.conjType;
+      renderConjugation(true);
+    });
+  });
+
+  const input = document.getElementById("conjugationInput");
+  const feedback = document.getElementById("conjugationFeedback");
+  document.getElementById("checkConjugation").addEventListener("click", () => {
+    const ok = isConjugationAnswer(input.value, answer);
+    feedback.textContent = ok ? `ถูก: ${answer}` : `ยังไม่ใช่ เฉลยคือ ${answer}`;
+    feedback.className = `feedback ${ok ? "good" : "bad"}`;
+  });
+  document.getElementById("showConjugation").addEventListener("click", () => {
+    feedback.textContent = `${verb.base} -> ${answer}`;
+    feedback.className = "feedback good";
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") document.getElementById("checkConjugation").click();
+  });
 }
 
 function renderMatch(forceNew = false) {
@@ -395,6 +492,26 @@ function normalizeAnswer(value) {
     .toLowerCase()
     .replace(/[ \t\r\n。、，,./／・|｜()（）\[\]［］{}「」『』"'`~〜\-ー]/g, "")
     .replace(/v/g, "")
+    .trim();
+}
+
+function isConjugationAnswer(value, answer) {
+  const normalized = normalizeJapanese(value);
+  if (!normalized) return false;
+  const variants = [answer];
+  const parenthetical = String(answer).match(/[（(]([^）)]+)[）)]/);
+  if (parenthetical) variants.push(parenthetical[1]);
+  variants.push(String(answer).replace(/[（(].*?[）)]/g, ""));
+  return variants
+    .flatMap((item) => String(item).split(/[、,]/))
+    .map(normalizeJapanese)
+    .filter(Boolean)
+    .some((item) => item === normalized);
+}
+
+function normalizeJapanese(value) {
+  return String(value || "")
+    .replace(/[ \t\r\n。、，,./／・|｜()（）\[\]［］{}「」『』"'`~〜\-ー]/g, "")
     .trim();
 }
 

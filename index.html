@@ -36,6 +36,19 @@
       </aside>
 
       <main class="content-panel">
+        <section class="hero-band">
+          <div class="hero-copy">
+            <p class="eyebrow">อ่าน - จำ - ผัน - ใช้</p>
+            <h2>JLPT N3 Grammar Lab</h2>
+            <p>สรุปไวยกรณ์พร้อมตัวอย่างประโยค และสนามซ้อมผันกริยาสำหรับคนที่ยังไม่แม่นรูปกริยา</p>
+            <div class="hero-stats">
+              <span><strong>141</strong> ไวยกรณ์</span>
+              <span><strong>3</strong> แบบฝึก</span>
+              <span><strong>10</strong> รูปผัน</span>
+            </div>
+          </div>
+        </section>
+
         <section class="toolbar-band">
           <div>
             <p class="eyebrow" id="activeScopeLabel">ทั้งหมด</p>
@@ -62,6 +75,22 @@
           <div id="exerciseArea" class="exercise-area"></div>
         </section>
 
+        <section class="conjugation-band" id="conjugationBand">
+          <div class="practice-head">
+            <div>
+              <p class="eyebrow">ผันกริยา</p>
+              <h2>Conjugation Dojo</h2>
+            </div>
+            <div class="toolbar-actions">
+              <button class="ghost-button" id="nextConjugationButton" type="button">สุ่มคำใหม่</button>
+            </div>
+          </div>
+          <div class="conjugation-layout">
+            <div class="conjugation-practice" id="conjugationPractice"></div>
+            <div class="conjugation-rules" id="conjugationRules"></div>
+          </div>
+        </section>
+
         <section class="cards-band">
           <div class="cards-head">
             <h2 id="cardsTitle">รายการไวยกรณ์</h2>
@@ -78,6 +107,7 @@
     </div>
 
     <script src="./grammar-data.js"></script>
+    <script src="./examples-data.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
