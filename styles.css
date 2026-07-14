@@ -18,8 +18,9 @@
   --bad: #b13c32;
   --shadow: 0 20px 60px rgba(24, 38, 45, 0.09);
   --shadow-soft: 0 10px 28px rgba(24, 38, 45, 0.06);
-  --thai-font: "TH Sarabun New", "TH Sarabun", "Sarabun", sans-serif;
-  font-family: var(--thai-font);
+  --thai-font: "Sarabun", "TH Sarabun New", "TH Sarabun", sans-serif;
+  --jp-font: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+  font-family: var(--thai-font), var(--jp-font);
 }
 
 * {
@@ -27,7 +28,7 @@
 }
 
 html {
-  font-size: 18px;
+  font-size: 20px;
   scroll-behavior: smooth;
   scroll-padding-top: 22px;
 }
@@ -36,8 +37,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-size: 19px;
-  line-height: 1.48;
+  font-family: var(--thai-font), var(--jp-font);
+  font-size: 1.05rem;
+  line-height: 1.55;
 }
 
 body::before {
@@ -58,6 +60,7 @@ button,
 input,
 select {
   font: inherit;
+  font-family: var(--thai-font), var(--jp-font);
 }
 
 button,
@@ -127,7 +130,7 @@ a {
 .section-heading h2 {
   margin: 0;
   letter-spacing: 0;
-  font-family: Inter, var(--thai-font);
+  font-family: var(--thai-font), var(--jp-font);
 }
 
 .brand-block h1 {
@@ -139,7 +142,7 @@ a {
 .eyebrow {
   margin: 0 0 7px;
   color: var(--teal);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -148,7 +151,7 @@ a {
 .source-note {
   margin: 11px 0 0;
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: 0.98rem;
   line-height: 1.65;
 }
 
@@ -157,7 +160,7 @@ a {
   gap: 8px;
   margin: 22px 0 14px;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 900;
 }
 
@@ -205,7 +208,7 @@ a {
 
 .stat-grid span {
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.9rem;
 }
 
 .progress-card {
@@ -222,13 +225,13 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  font-size: 0.76rem;
+  font-size: 0.88rem;
   font-weight: 800;
 }
 
 .progress-meta strong {
   color: #f1c879;
-  font-size: 0.86rem;
+  font-size: 0.95rem;
 }
 
 .progress-track {
@@ -251,14 +254,14 @@ a {
 .progress-card p {
   margin: 9px 0 0;
   color: rgba(248, 244, 235, 0.67);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   line-height: 1.5;
 }
 
 .side-label {
   margin: 25px 2px 9px;
   color: #929794;
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -284,7 +287,7 @@ a {
   border-radius: 10px;
   color: #536066;
   padding: 7px 10px;
-  font-size: 0.84rem;
+  font-size: 0.98rem;
   font-weight: 850;
   transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
@@ -351,14 +354,14 @@ a {
 }
 
 .day-button span:first-child {
-  font-size: 0.8rem;
+  font-size: 0.94rem;
   font-weight: 850;
   white-space: nowrap;
 }
 
 .day-button span:last-child {
   color: #9a9e9d;
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   white-space: nowrap;
 }
 
@@ -435,7 +438,7 @@ a {
   max-width: 530px;
   margin: 20px 0 0;
   color: rgba(255, 250, 241, 0.72);
-  font-size: 1rem;
+  font-size: 1.08rem;
   line-height: 1.8;
 }
 
@@ -448,7 +451,7 @@ a {
 
 .hero-stats span {
   color: rgba(255, 250, 241, 0.63);
-  font-size: 0.77rem;
+  font-size: 0.88rem;
   font-weight: 700;
 }
 
@@ -581,7 +584,7 @@ a {
 .cards-head > p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.96rem;
   line-height: 1.6;
 }
 
@@ -646,7 +649,7 @@ a {
   border-color: transparent;
   background: transparent;
   padding: 6px 13px;
-  font-size: 0.84rem;
+  font-size: 0.94rem;
 }
 
 .segment.active {
@@ -673,13 +676,13 @@ a {
 
 .exercise-question {
   margin: 0;
-  font-size: 1.03rem;
+  font-size: 1.08rem;
   line-height: 1.75;
 }
 
 .exercise-kicker {
   color: var(--teal);
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   font-weight: 900;
   letter-spacing: 0.04em;
 }
@@ -701,7 +704,7 @@ a {
 }
 
 .context-sentence .example-th {
-  font-size: 1.18rem;
+  font-size: 1.3rem;
 }
 
 .context-choice {
@@ -888,25 +891,44 @@ a {
 .alias-row {
   justify-content: center;
   align-items: center;
+  align-content: center;
   align-self: end;
-  min-height: 42px;
+  justify-self: stretch;
+  min-height: 58px;
   width: 100%;
   margin-top: auto;
-  border-top: 1px solid rgba(222, 216, 206, 0.78);
-  padding-top: 10px;
+  border: 1px solid rgba(222, 216, 206, 0.9);
+  border-radius: 10px;
+  background: #f6f4ef;
+  padding: 10px 12px;
+  text-align: center;
 }
 
 .alias-row .tag {
-  background: #f0eee9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  background: #ffffff;
+  padding: 6px 12px;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
   border-radius: 999px;
   background: var(--soft);
   color: var(--muted);
-  padding: 3px 8px;
-  font-size: 0.7rem;
+  padding: 4px 9px;
+  font-size: 0.88rem;
   font-weight: 850;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .pattern {
@@ -923,6 +945,8 @@ a {
 .form,
 .note {
   margin: 0;
+  font-family: var(--thai-font), var(--jp-font);
+  font-size: 1.05rem;
   line-height: 1.7;
 }
 
@@ -948,7 +972,7 @@ a {
   cursor: pointer;
   padding: 10px 12px;
   color: var(--gold);
-  font-size: 0.86rem;
+  font-size: 0.96rem;
   font-weight: 900;
 }
 
@@ -969,7 +993,7 @@ a {
   background: rgba(173, 123, 47, 0.12);
   color: #825c23;
   padding: 2px 7px;
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 900;
 }
 
@@ -988,7 +1012,7 @@ a {
 .example-th {
   color: #536066;
   font-family: var(--thai-font);
-  font-size: 1.18rem;
+  font-size: 1.3rem;
   font-weight: 650;
 }
 
@@ -1018,7 +1042,7 @@ a {
   background: rgba(53, 66, 110, 0.09);
   color: var(--indigo);
   padding: 4px 8px;
-  font-size: 0.73rem;
+  font-size: 0.9rem;
   font-weight: 900;
 }
 
@@ -1050,14 +1074,14 @@ a {
   background: var(--panel-strong);
   color: var(--ink);
   padding: 6px 10px;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 850;
 }
 
 .conj-tab span {
   display: block;
   color: var(--muted);
-  font-size: 0.68rem;
+  font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.15;
 }
@@ -1098,14 +1122,14 @@ a {
 .group-guide-item span {
   margin-top: 2px;
   color: var(--muted);
-  font-size: 0.79rem;
+  font-size: 0.92rem;
   font-weight: 850;
 }
 
 .group-guide-item p {
   margin: 6px 0 0;
   color: #536066;
-  font-size: 0.83rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
@@ -1122,7 +1146,7 @@ a {
 
 .rule-card h3 span {
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.98rem;
   font-weight: 700;
 }
 
@@ -1181,7 +1205,7 @@ a {
 .matrix-head h3 {
   margin: 0;
   color: var(--navy);
-  font-size: 1.12rem;
+  font-size: 1.25rem;
 }
 
 .matrix-head p {
@@ -1219,7 +1243,7 @@ a {
   z-index: 1;
   background: #f5f4f0;
   color: var(--ink);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 900;
 }
 
@@ -1241,8 +1265,8 @@ a {
   display: block;
   margin-top: 2px;
   color: var(--muted);
-  font-family: Inter, var(--thai-font);
-  font-size: 0.7rem;
+  font-family: var(--thai-font), var(--jp-font);
+  font-size: 0.85rem;
   font-weight: 700;
 }
 
@@ -1250,6 +1274,11 @@ a {
   color: #344249;
   font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
   font-weight: 760;
+}
+
+.verb-matrix td:nth-child(2) {
+  font-family: var(--thai-font), var(--jp-font);
+  font-size: 0.9rem;
 }
 
 .verb-matrix .active-form {
@@ -1311,6 +1340,8 @@ a {
   border-left: 4px solid var(--gold);
   background: #fcf7ed;
   padding: 10px 12px;
+  font-family: var(--thai-font), var(--jp-font);
+  font-size: 1.05rem;
   line-height: 1.65;
 }
 
@@ -1461,7 +1492,7 @@ input:focus-visible {
     gap: 6px;
     margin-top: 2px;
     color: #929794;
-    font-size: 0.84rem;
+    font-size: 0.95rem;
     font-weight: 900;
   }
 
