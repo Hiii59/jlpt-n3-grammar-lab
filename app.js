@@ -25,6 +25,8 @@ const els = {
   searchInput: document.getElementById("searchInput"),
   totalCount: document.getElementById("totalCount"),
   knownCount: document.getElementById("knownCount"),
+  progressBar: document.getElementById("progressBar"),
+  progressLabel: document.getElementById("progressLabel"),
   sectionTitle: document.getElementById("sectionTitle"),
   activeScopeLabel: document.getElementById("activeScopeLabel"),
   cardsTitle: document.getElementById("cardsTitle"),
@@ -73,6 +75,29 @@ function init() {
     els.practiceBand.scrollIntoView({ behavior: "smooth", block: "start" });
   });
   els.nextConjugationButton.addEventListener("click", () => renderConjugation(true));
+  initSectionNav();
+}
+
+function initSectionNav() {
+  const links = [...document.querySelectorAll(".section-link")];
+  const sections = links
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  if (!sections.length || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!visible) return;
+
+    links.forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
+    });
+  }, { rootMargin: "-16% 0px -62% 0px", threshold: [0.05, 0.2, 0.5] });
+
+  sections.forEach((section) => observer.observe(section));
 }
 
 function readKnown() {
@@ -89,6 +114,9 @@ function saveKnown() {
 
 function updateStats() {
   els.knownCount.textContent = state.known.size;
+  const progress = grammar.length ? Math.round((state.known.size / grammar.length) * 100) : 0;
+  if (els.progressBar) els.progressBar.style.width = `${progress}%`;
+  if (els.progressLabel) els.progressLabel.textContent = `${progress}%`;
 }
 
 function days() {

@@ -17,14 +17,14 @@
         </div>
 
         <label class="search-box">
-          <span>ค้นหา</span>
+          <span>ค้นหาในบทเรียน</span>
           <input id="searchInput" type="search" placeholder="เช่น わけ, เพราะ, passive" autocomplete="off" />
         </label>
 
         <div class="stat-grid" aria-live="polite">
           <div>
             <strong id="totalCount">0</strong>
-            <span>ไวยกรณ์</span>
+            <span>หัวข้อ</span>
           </div>
           <div>
             <strong id="knownCount">0</strong>
@@ -32,7 +32,31 @@
           </div>
         </div>
 
+        <div class="progress-card">
+          <div class="progress-meta">
+            <span>ความคืบหน้า</span>
+            <strong id="progressLabel">0%</strong>
+          </div>
+          <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+          <p>ติ๊กหัวข้อที่จำได้แล้ว เพื่อดูพัฒนาการของตัวเอง</p>
+        </div>
+
+        <div class="side-label">สารบัญ</div>
+        <nav class="section-nav" aria-label="เมนูเนื้อหา">
+          <a class="section-link active" href="#grammarSection"><span class="nav-index">01</span><span>เนื้อหาไวยากรณ์</span><span class="nav-arrow">↗</span></a>
+          <a class="section-link" href="#practiceBand"><span class="nav-index">02</span><span>แบบฝึกหัด</span><span class="nav-arrow">↗</span></a>
+          <a class="section-link" href="#conjugationBand"><span class="nav-index">03</span><span>ผันรูปกริยา</span><span class="nav-arrow">↗</span></a>
+          <a class="section-link" href="#auditBand"><span class="nav-index">04</span><span>บันทึกการตรวจ</span><span class="nav-arrow">↗</span></a>
+        </nav>
+
+        <div class="side-label lessons-label">เลือกบทเรียน</div>
+
         <nav class="day-list" id="dayList" aria-label="เลือกบทเรียน"></nav>
+
+        <div class="side-footer">
+          <span>JP / TH</span>
+          <span>STUDY EDITION</span>
+        </div>
       </aside>
 
       <main class="content-panel">
@@ -47,6 +71,7 @@
               <span><strong>24</strong> รูปผัน</span>
             </div>
           </div>
+          <div class="hero-visual" aria-hidden="true"></div>
         </section>
 
         <section class="toolbar-band">
@@ -55,15 +80,32 @@
             <h2 id="sectionTitle">สรุปไวยกรณ์ทั้งหมด</h2>
           </div>
           <div class="toolbar-actions">
-            <button class="ghost-button" id="shuffleButton" type="button">สุ่มอ่าน</button>
-            <button class="primary-button" id="practiceSelectedButton" type="button">ฝึกชุดนี้</button>
+            <button class="ghost-button" id="shuffleButton" type="button"><span aria-hidden="true">↗</span> สุ่มไวยากรณ์</button>
+            <button class="primary-button" id="practiceSelectedButton" type="button"><span aria-hidden="true">↓</span> ไปที่แบบฝึก</button>
           </div>
+        </section>
+
+        <section class="cards-band reading-band" id="grammarSection">
+          <div class="section-heading">
+            <div class="section-number">01</div>
+            <div>
+              <p class="eyebrow">อ่านก่อนฝึก</p>
+              <h2 id="cardsTitle">รายการไวยกรณ์</h2>
+            </div>
+            <p class="section-description">เปิดดูตัวอย่างประโยคและทำความเข้าใจรูปประโยคทีละหัวข้อ</p>
+          </div>
+          <div class="cards-head">
+            <p class="reading-hint">แตะ “จำได้แล้ว” เมื่อรู้สึกว่าพร้อมไปต่อ</p>
+            <p id="resultCount">0 รายการ</p>
+          </div>
+          <div id="grammarList" class="grammar-list"></div>
         </section>
 
         <section class="practice-band" id="practiceBand">
           <div class="practice-head">
             <div>
-              <p class="eyebrow">แบบฝึกหัด</p>
+              <div class="section-number small">02</div>
+              <p class="eyebrow">ทบทวนความเข้าใจ</p>
               <h2 id="practiceTitle">ทบทวนจากทั้งหมด</h2>
             </div>
             <div class="segmented" role="tablist" aria-label="ชนิดแบบฝึกหัด">
@@ -78,11 +120,12 @@
         <section class="conjugation-band" id="conjugationBand">
           <div class="practice-head">
             <div>
+              <div class="section-number small">03</div>
               <p class="eyebrow">ผันกริยา</p>
               <h2>Conjugation Dojo</h2>
             </div>
             <div class="toolbar-actions">
-              <button class="ghost-button" id="nextConjugationButton" type="button">สุ่มคำใหม่</button>
+              <button class="ghost-button" id="nextConjugationButton" type="button"><span aria-hidden="true">↻</span> สุ่มคำใหม่</button>
             </div>
           </div>
           <div class="conjugation-layout">
@@ -92,15 +135,8 @@
           <div class="conjugation-matrix" id="conjugationMatrix"></div>
         </section>
 
-        <section class="cards-band">
-          <div class="cards-head">
-            <h2 id="cardsTitle">รายการไวยกรณ์</h2>
-            <p id="resultCount">0 รายการ</p>
-          </div>
-          <div id="grammarList" class="grammar-list"></div>
-        </section>
-
-        <section class="audit-band">
+        <section class="audit-band" id="auditBand">
+          <div class="section-number small">04</div>
           <h2>บันทึกตรวจคำแปล</h2>
           <div id="auditList" class="audit-list"></div>
         </section>
