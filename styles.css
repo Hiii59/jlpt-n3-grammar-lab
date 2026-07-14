@@ -633,6 +633,7 @@ a {
 
 .segmented {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--line);
@@ -656,6 +657,11 @@ a {
   box-shadow: 0 5px 12px rgba(24, 38, 45, 0.07);
 }
 
+.segment {
+  flex: 1 1 92px;
+  white-space: nowrap;
+}
+
 .exercise-card {
   display: grid;
   gap: 14px;
@@ -669,6 +675,61 @@ a {
   margin: 0;
   font-size: 1.03rem;
   line-height: 1.75;
+}
+
+.exercise-kicker {
+  color: var(--teal);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.context-sentence {
+  border: 1px solid rgba(173, 123, 47, 0.24);
+  border-radius: 12px;
+  background: #fcf7ed;
+  padding: 14px 16px;
+}
+
+.context-sentence .example-jp,
+.context-sentence .example-th {
+  margin-top: 8px;
+}
+
+.context-sentence .example-jp {
+  font-size: 1.22rem;
+}
+
+.context-sentence .example-th {
+  font-size: 1.18rem;
+}
+
+.context-choice {
+  font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", var(--thai-font);
+  font-size: 1rem;
+}
+
+.recall-pattern {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.hint-box {
+  display: grid;
+  gap: 4px;
+  border-left: 4px solid var(--gold);
+  background: #fcf7ed;
+  color: #536066;
+  padding: 10px 12px;
+}
+
+.hint-box strong {
+  color: var(--gold);
+}
+
+.hint-example {
+  color: var(--ink);
+  font-family: "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
 }
 
 .pattern-large {
@@ -824,6 +885,21 @@ a {
   gap: 6px;
 }
 
+.alias-row {
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+  min-height: 42px;
+  width: 100%;
+  margin-top: auto;
+  border-top: 1px solid rgba(222, 216, 206, 0.78);
+  padding-top: 10px;
+}
+
+.alias-row .tag {
+  background: #f0eee9;
+}
+
 .tag {
   border-radius: 999px;
   background: var(--soft);
@@ -911,7 +987,9 @@ a {
 
 .example-th {
   color: #536066;
-  font-size: 0.9rem;
+  font-family: var(--thai-font);
+  font-size: 1.18rem;
+  font-weight: 650;
 }
 
 .conjugation-layout {

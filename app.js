@@ -219,7 +219,7 @@ function grammarCard(item) {
   const tagText = item.day.includes("-7") ? "敬語" : "ไวยกรณ์";
   const itemExamples = examples[item.id] || [];
   const aliases = item.aliases?.length
-    ? `<div class="tag-row">${item.aliases.slice(0, 3).map((alias) => `<span class="tag">${escapeHtml(alias)}</span>`).join("")}</div>`
+    ? `<div class="tag-row alias-row" aria-label="คำที่เกี่ยวข้อง">${item.aliases.slice(0, 3).map((alias) => `<span class="tag">${escapeHtml(alias)}</span>`).join("")}</div>`
     : "";
   const exampleBlock = itemExamples.length
     ? `<details class="example-block" open>
@@ -282,6 +282,10 @@ function renderExercise(forceNew = false) {
 
   if (state.mode === "choice") {
     renderChoice(state.currentEntry, pool);
+  } else if (state.mode === "context") {
+    renderContext(state.currentEntry, pool);
+  } else if (state.mode === "recall") {
+    renderRecall(state.currentEntry);
   } else {
     renderCloze(state.currentEntry);
   }
@@ -356,6 +360,90 @@ function renderChoice(entry, pool) {
     });
   });
   document.getElementById("nextExercise").addEventListener("click", () => renderExercise(true));
+}
+
+function renderContext(entry, pool) {
+  const example = (examples[entry.id] || [])[0] || {
+    jp: entry.form,
+    th: entry.meaning,
+    source: "ประโยคฝึก"
+  };
+  const distractorPool = pool.length >= 4 ? pool : grammar;
+  const choices = shuffle([
+    entry,
+    ...shuffle(distractorPool.filter((item) => item.id !== entry.id)).slice(0, 3)
+  ]);
+
+  els.exerciseArea.innerHTML = `
+    <div class="exercise-card context-exercise">
+      <div class="exercise-kicker">อ่านบริบทก่อนตอบ</div>
+      <div class="context-sentence">
+        <div class="example-source">${escapeHtml(example.source || "ประโยคฝึก")}</div>
+        <p class="example-jp">${escapeHtml(example.jp)}</p>
+        <p class="example-th">${escapeHtml(example.th)}</p>
+      </div>
+      <p class="exercise-question">ประโยคนี้ใช้ไวยากรณ์ข้อใด?</p>
+      <div class="choice-grid">
+        ${choices.map((item) => `<button class="choice-button context-choice" data-choice="${item.id}" type="button">${escapeHtml(item.pattern)}</button>`).join("")}
+      </div>
+      <p class="feedback" id="exerciseFeedback"></p>
+      <div class="answer-row">
+        <button class="ghost-button" id="nextExercise" type="button">ข้อถัดไป</button>
+      </div>
+    </div>
+  `;
+
+  const feedback = document.getElementById("exerciseFeedback");
+  els.exerciseArea.querySelectorAll("[data-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const ok = button.dataset.choice === entry.id;
+      button.classList.add(ok ? "correct" : "wrong");
+      els.exerciseArea.querySelector(`[data-choice="${entry.id}"]`)?.classList.add("correct");
+      feedback.textContent = ok ? `ถูกต้อง: ${entry.pattern}` : `ยังไม่ใช่ ลองสังเกตความหมายของประโยคอีกครั้ง`;
+      feedback.className = `feedback ${ok ? "good" : "bad"}`;
+      if (ok) markKnown(entry.id);
+    });
+  });
+  document.getElementById("nextExercise").addEventListener("click", () => renderExercise(true));
+}
+
+function renderRecall(entry) {
+  const example = (examples[entry.id] || [])[0];
+  els.exerciseArea.innerHTML = `
+    <div class="exercise-card recall-exercise">
+      <div class="exercise-kicker">เรียกคืนจากความจำ</div>
+      <p class="exercise-question">เห็นรูปไวยากรณ์แล้ว ลองอธิบายความหมายเป็นภาษาไทยโดยไม่เปิดการ์ด</p>
+      <p class="pattern-large recall-pattern">${escapeHtml(entry.pattern)}</p>
+      <div class="answer-row">
+        <input id="recallInput" type="text" placeholder="พิมพ์ความหมายที่นึกออก..." autocomplete="off" />
+        <button class="primary-button" id="checkRecall" type="button">ตรวจคำตอบ</button>
+        <button class="ghost-button" id="showRecallHint" type="button">ขอคำใบ้</button>
+        <button class="ghost-button" id="nextExercise" type="button">ข้อถัดไป</button>
+      </div>
+      <div class="hint-box" id="recallHint" hidden>
+        <strong>คำใบ้</strong>
+        <span>${escapeHtml(entry.form)}</span>
+        ${example ? `<span class="hint-example">${escapeHtml(example.jp)}</span>` : ""}
+      </div>
+      <p class="feedback" id="exerciseFeedback"></p>
+    </div>
+  `;
+
+  const input = document.getElementById("recallInput");
+  const feedback = document.getElementById("exerciseFeedback");
+  document.getElementById("checkRecall").addEventListener("click", () => {
+    const ok = isMeaningAnswer(input.value, entry);
+    feedback.textContent = ok ? `จำได้ดี: ${entry.meaning}` : `ลองอีกครั้ง หรือกดคำใบ้ - ความหมายคือ ${entry.meaning}`;
+    feedback.className = `feedback ${ok ? "good" : "bad"}`;
+    if (ok) markKnown(entry.id);
+  });
+  document.getElementById("showRecallHint").addEventListener("click", () => {
+    document.getElementById("recallHint").hidden = false;
+  });
+  document.getElementById("nextExercise").addEventListener("click", () => renderExercise(true));
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") document.getElementById("checkRecall").click();
+  });
 }
 
 function renderConjugation(forceNew = false) {
@@ -573,6 +661,20 @@ function isAcceptedAnswer(value, entry) {
   if (!answer) return false;
   const accepted = [entry.pattern, ...(entry.aliases || []), shortAnswer(entry)].map(normalizeAnswer).filter(Boolean);
   return accepted.some((item) => item === answer || item.includes(answer) || answer.includes(item));
+}
+
+function isMeaningAnswer(value, entry) {
+  const answer = normalizeMeaning(value);
+  if (!answer) return false;
+  const candidates = [
+    entry.meaning,
+    ...String(entry.meaning || "").split(/[;,/|]/g)
+  ].map(normalizeMeaning).filter((item) => item.length >= 2);
+  return candidates.some((item) => answer === item || (item.length >= 8 && (item.includes(answer) || answer.includes(item))));
+}
+
+function normalizeMeaning(value) {
+  return String(value || "").toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
 }
 
 function shortAnswer(entry) {
