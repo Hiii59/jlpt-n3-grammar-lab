@@ -3,7 +3,7 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "..");
 const dist = path.join(root, "dist");
-const files = ["index.html", "styles.css", "app.js", "grammar-data.js", "examples-data.js", "conjugation-data.js"];
+const files = ["index.html", "styles.css", "app.js", "grammar-data.js", "examples-data.js", "conjugation-data.js", "kanji.html", "kanji.css", "kanji-app.js", "kanji-data.js", "kanji-readings.js", "kanji-vocabulary.js"];
 
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });

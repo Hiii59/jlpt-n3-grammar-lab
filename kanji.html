@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090e0d" />
+    <title>JLPT N3 Kanji Studio</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./kanji.css?v=20260715-2" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="wordmark" href="./kanji.html" aria-label="Kanji Studio หน้าหลัก">
+        <span class="seal" aria-hidden="true">漢</span>
+        <span><b>N3 STUDIO</b><small>Japanese mastery system</small></span>
+      </a>
+      <nav class="product-switch" aria-label="เลือกหมวดการเรียน">
+        <a href="./index.html">ไวยากรณ์</a>
+        <a class="active" href="./kanji.html" aria-current="page">คันจิ</a>
+      </nav>
+      <div class="top-progress" aria-live="polite">
+        <span class="live-dot"></span>
+        <span>ความแม่นรวม</span>
+        <strong id="topKnown">0 / 336</strong>
+      </div>
+    </header>
+
+    <div class="kanji-shell">
+      <aside class="lesson-rail">
+        <div class="rail-intro">
+          <p class="eyebrow">PREMIUM COURSE / N3</p>
+          <h1>Kanji<br />Studio</h1>
+          <p>336 ตัว · 881 คำศัพท์ · 42 บทเรียน</p>
+        </div>
+
+        <label class="search-field">
+          <span>ค้นหาทั้งคอร์ส</span>
+          <span class="search-control"><input id="kanjiSearch" type="search" placeholder="予約 · よやく · จอง" autocomplete="off" /><i aria-hidden="true"></i></span>
+        </label>
+
+        <label class="mobile-lesson-picker">
+          <span>เลือกบทเรียน</span>
+          <select id="lessonSelect"></select>
+        </label>
+
+        <div class="week-tabs" id="weekTabs" role="tablist" aria-label="เลือกสัปดาห์"></div>
+        <nav class="lesson-list" id="lessonList" aria-label="บทเรียนคันจิ"></nav>
+
+        <div class="rail-progress">
+          <div><span>COURSE MASTERY</span><strong id="progressPercent">0%</strong></div>
+          <div class="progress-track"><span id="progressFill"></span></div>
+          <small id="masteryCaption">เริ่มเก็บคะแนนความแม่นของคุณ</small>
+        </div>
+      </aside>
+
+      <main class="kanji-main">
+        <section class="lesson-hero" id="lessonTop">
+          <div class="hero-scan" aria-hidden="true"></div>
+          <div class="lesson-hero-copy">
+            <div class="lesson-meta"><span id="lessonWeek">สัปดาห์ 1</span><span id="lessonDay">วันที่ 1</span><span class="lesson-status" id="lessonGrade">เริ่มเรียน</span></div>
+            <p class="eyebrow">OBSERVE · READ · RETRIEVE</p>
+            <h2><span id="lessonTitle">駐車場</span><small id="lessonTitleTh">ลานจอดรถ</small></h2>
+            <p id="lessonScene">อ่านป้ายและข้อห้ามที่พบในลานจอดรถ</p>
+            <div class="hero-actions">
+              <button class="primary-action" id="startPractice" type="button">เริ่มทบทวนบทนี้ <span aria-hidden="true">↘</span></button>
+              <button class="quiet-action" id="shuffleLesson" type="button">สุ่มบทเรียน</button>
+            </div>
+          </div>
+
+          <div class="mastery-console" aria-label="สรุปความคืบหน้า">
+            <div class="mastery-ring" id="masteryRing" style="--progress:0">
+              <div><strong id="masteryPercent">0%</strong><span>MASTERY</span></div>
+            </div>
+            <div class="console-stats">
+              <div><span>คันจิในบท</span><strong id="lessonKnown">0 / 8</strong></div>
+              <div><span>คำศัพท์ในบท</span><strong id="lessonVocab">0</strong></div>
+              <div><span>คลังคำทั้งหมด</span><strong>881</strong></div>
+            </div>
+            <div class="score-dots" id="scoreDots"></div>
+          </div>
+        </section>
+
+        <section class="study-section" id="studySection">
+          <header class="section-header">
+            <div><p class="section-index">01 / KNOWLEDGE DECK</p><h2>คันจิและคำศัพท์ในบทนี้</h2></div>
+            <p>เสียงองและเสียงคุนอยู่บนการ์ดทุกใบ กดดูคลังคำเพื่อเปิดคำศัพท์ทั้งหมดจากหนังสือ แล้วให้คะแนนตามระดับที่จำได้จริง</p>
+          </header>
+          <div class="search-summary" id="searchSummary" hidden></div>
+          <div class="kanji-grid" id="kanjiGrid"></div>
+        </section>
+
+        <section class="memory-strip" aria-label="เทคนิคช่วยจำ">
+          <span class="memory-mark">記</span>
+          <div><p class="eyebrow">ACTIVE RECALL PROTOCOL</p><h2>อ่านหนึ่งรอบ แล้วบังคับสมองเรียกคำตอบออกมา</h2></div>
+          <p>ระดับความจำมี 4 ขั้น: เริ่มเรียน → กำลังจำ → จำได้ → แม่นแล้ว ให้เลื่อนระดับเฉพาะเมื่ออ่านและบอกความหมายได้โดยไม่เปิดคำตอบ</p>
+        </section>
+
+        <section class="practice-section" id="kanjiPractice">
+          <header class="section-header practice-heading">
+            <div><p class="section-index">02 / RETRIEVAL ARENA</p><h2>สนามทบทวน</h2></div>
+            <div class="practice-meta"><span id="practiceSession">SESSION 0 / 0</span><strong id="practiceAccuracy">--%</strong></div>
+          </header>
+          <div class="mode-switch" role="tablist" aria-label="รูปแบบแบบฝึก">
+            <button class="active" data-mode="meaning" type="button">เลือกความหมาย</button>
+            <button data-mode="reading" type="button">เลือกคำอ่าน</button>
+            <button data-mode="match" type="button">จับคู่</button>
+            <button data-mode="recall" type="button">เรียกคืน</button>
+          </div>
+          <div class="practice-card" id="practiceCard"></div>
+        </section>
+
+        <footer class="source-footer">
+          <p>เรียบเรียงตามลำดับจาก <b>日本語総まとめ N3 漢字 Thai</b></p>
+          <p>336 คันจิ · 881 รายการคำศัพท์ · พร้อมคำอ่านและคำแปลไทย</p>
+        </footer>
+      </main>
+    </div>
+
+    <div class="detail-backdrop" id="detailBackdrop" hidden></div>
+    <aside class="detail-panel" id="detailPanel" aria-hidden="true" aria-label="รายละเอียดคันจิ">
+      <button class="detail-close" id="detailClose" type="button" aria-label="ปิดรายละเอียด">×</button>
+      <div id="detailContent"></div>
+    </aside>
+
+    <script src="./kanji-data.js"></script>
+    <script src="./kanji-readings.js"></script>
+    <script src="./kanji-vocabulary.js"></script>
+    <script src="./kanji-app.js"></script>
+  </body>
+</html>

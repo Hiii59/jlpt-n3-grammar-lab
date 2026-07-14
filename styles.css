@@ -42,6 +42,48 @@ body {
   line-height: 1.55;
 }
 
+.lab-switcher {
+  position: fixed;
+  top: 14px;
+  right: 22px;
+  z-index: 100;
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(24, 38, 45, 0.15);
+  border-radius: 6px;
+  background: rgba(255, 253, 249, 0.92);
+  box-shadow: 0 8px 24px rgba(24, 38, 45, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.lab-switcher a {
+  min-width: 86px;
+  border-radius: 4px;
+  padding: 7px 12px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.lab-switcher a.active {
+  background: var(--navy);
+  color: white;
+}
+
+@media (max-width: 720px) {
+  .lab-switcher {
+    top: 8px;
+    right: 10px;
+  }
+
+  .lab-switcher a {
+    min-width: 70px;
+    padding-inline: 9px;
+  }
+}
+
 body::before {
   position: fixed;
   inset: 0;
