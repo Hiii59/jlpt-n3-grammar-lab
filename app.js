@@ -80,11 +80,17 @@ function init() {
 
 function initSectionNav() {
   const links = [...document.querySelectorAll(".section-link")];
+  const select = document.getElementById("sectionSelect");
   const sections = links
     .map((link) => document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
 
   if (!sections.length || !("IntersectionObserver" in window)) return;
+
+  select?.addEventListener("change", () => {
+    const target = document.querySelector(select.value);
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
   const observer = new IntersectionObserver((entries) => {
     const visible = entries
@@ -95,6 +101,7 @@ function initSectionNav() {
     links.forEach((link) => {
       link.classList.toggle("active", link.getAttribute("href") === `#${visible.target.id}`);
     });
+    if (select) select.value = `#${visible.target.id}`;
   }, { rootMargin: "-16% 0px -62% 0px", threshold: [0.05, 0.2, 0.5] });
 
   sections.forEach((section) => observer.observe(section));
@@ -235,7 +242,7 @@ function grammarCard(item) {
           <span class="tag">${item.day} 日目</span>
           <span class="tag">${tagText}</span>
         </div>
-        <button class="small-button${known ? " known" : ""}" data-known-toggle="${item.id}" type="button">${known ? "จำแล้ว" : "ยังไม่จำ"}</button>
+        <button class="small-button${known ? " known" : ""}" data-known-toggle="${item.id}" type="button" aria-pressed="${known}" title="${known ? "สถานะ: จำแล้ว กดเพื่อเปลี่ยนเป็นยังไม่จำ" : "สถานะ: ยังไม่จำ กดเมื่อจำได้แล้ว"}">${known ? "จำแล้ว" : "ยังไม่จำ"}</button>
       </div>
       <p class="pattern">${escapeHtml(item.pattern)}</p>
       <p class="meaning">${escapeHtml(item.meaning)}</p>

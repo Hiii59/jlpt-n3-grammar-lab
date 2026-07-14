@@ -18,7 +18,8 @@
   --bad: #b13c32;
   --shadow: 0 20px 60px rgba(24, 38, 45, 0.09);
   --shadow-soft: 0 10px 28px rgba(24, 38, 45, 0.06);
-  font-family: "Noto Sans Thai", "Noto Sans JP", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  --thai-font: "TH Sarabun New", "TH Sarabun", "Sarabun", sans-serif;
+  font-family: var(--thai-font);
 }
 
 * {
@@ -26,6 +27,7 @@
 }
 
 html {
+  font-size: 18px;
   scroll-behavior: smooth;
   scroll-padding-top: 22px;
 }
@@ -34,6 +36,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
+  font-size: 19px;
+  line-height: 1.48;
 }
 
 body::before {
@@ -123,6 +127,7 @@ a {
 .section-heading h2 {
   margin: 0;
   letter-spacing: 0;
+  font-family: Inter, var(--thai-font);
 }
 
 .brand-block h1 {
@@ -294,6 +299,10 @@ a {
 
 .section-link.active {
   box-shadow: 0 8px 20px rgba(24, 38, 45, 0.05);
+}
+
+.section-select-wrap {
+  display: none;
 }
 
 .nav-index {
@@ -805,6 +814,7 @@ a {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -1153,7 +1163,7 @@ a {
   display: block;
   margin-top: 2px;
   color: var(--muted);
-  font-family: Inter, "Noto Sans Thai", system-ui, sans-serif;
+  font-family: Inter, var(--thai-font);
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -1171,15 +1181,37 @@ a {
 }
 
 .small-button {
-  min-height: 34px;
-  padding: 6px 10px;
-  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 112px;
+  min-height: 46px;
+  padding: 8px 14px;
+  font-size: 0.98rem;
+  font-weight: 850;
+}
+
+.small-button::before {
+  content: "○";
+  color: #9a9e9d;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .small-button.known {
   border-color: var(--good);
+  background: #eaf7f0;
   color: var(--good);
   font-weight: 850;
+  box-shadow: 0 6px 14px rgba(24, 115, 74, 0.12);
+}
+
+.small-button.known::before {
+  content: "✓";
+  color: var(--good);
+  font-weight: 950;
 }
 
 .audit-band {
@@ -1338,5 +1370,36 @@ input:focus-visible {
 
   .brand-block h1 {
     font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 640px) and (orientation: portrait) {
+  .section-nav {
+    display: none;
+  }
+
+  .section-select-wrap {
+    display: grid;
+    gap: 6px;
+    margin-top: 2px;
+    color: #929794;
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+
+  .section-select-wrap select {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel-strong);
+    color: var(--navy);
+    padding: 8px 12px;
+    outline: none;
+  }
+
+  .section-select-wrap select:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 4px rgba(23, 108, 103, 0.1);
   }
 }
